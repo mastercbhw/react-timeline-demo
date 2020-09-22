@@ -1,38 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SideBarBody from './SideBarBody';
+import Header from './Header';
+import Body from './Body';
 import styles from './index.less';
 
-function Sidebar(props) {
-  const {
-    tracks,
-    toggleTrackOpen,
-    clickTrackButton,
-    sidebarWidth,
-    ref,
-  } = props;
-  return (
-    <div className={styles.rtSidebar} style={{ width: sidebarWidth }} ref={ref}>
-      <SideBarBody
-        tracks={tracks}
-        toggleTrackOpen={toggleTrackOpen}
-        clickTrackButton={clickTrackButton}
-      />
-    </div>
-  );
-}
+const Sidebar = ({
+  timebar,
+  tracks,
+  toggleTrackOpen,
+  sticky,
+  clickTrackButton,
+}) => (
+  <div className={styles.rtSidebar}>
+    <Header timebar={timebar} sticky={sticky} />
+    <Body
+      tracks={tracks}
+      toggleTrackOpen={toggleTrackOpen}
+      clickTrackButton={clickTrackButton}
+    />
+  </div>
+);
 
 Sidebar.propTypes = {
-  // timebar: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     id: PropTypes.string.isRequired,
-  //     title: PropTypes.string,
-  //   }).isRequired
-  // ).isRequired,
-  tracks: PropTypes.arrayOf(PropTypes.shape({})).isRequired, // 轨道
-  toggleTrackOpen: PropTypes.func.isRequired, // 打开
+  timebar: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string,
+    }).isRequired,
+  ).isRequired,
+  tracks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  toggleTrackOpen: PropTypes.func.isRequired,
   sticky: PropTypes.shape({}).isRequired,
-  clickTrackButton: PropTypes.func.isRequired, // 点击按钮
+  clickTrackButton: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

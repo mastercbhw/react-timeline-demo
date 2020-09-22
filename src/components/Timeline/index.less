@@ -1,15 +1,24 @@
-.timelineWarp {
-  overflow: scroll;
-  height: 100%;
-  display: flex;
+.rtTimeline {
+  position: relative;
+  overflow: hidden;
+}
 
-  .left {
-    width: 200px;
-  }
+.rtTimelineHeaderScroll {
+  overflow-x: auto;
 
-  .right {
-    flex: 1;
-    height: 100%;
-    background: #f8f8f8;
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
+
+.rtTimelineHeader.rtIsSticky {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.rtTimelineBody {
+  position: relative;
+  background: white;
 }

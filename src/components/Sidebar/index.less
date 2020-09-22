@@ -7,12 +7,14 @@
 
 .rtSidebarHeader {
   background-color: @react-timelines-sidebar-background-color;
+  overflow: hidden;
 }
 
 .rtSidebarHeader.rtIsSticky {
   position: fixed;
   top: 0;
   z-index: 2;
+  direction: rtl;
   margin-left: (
     @react-timelines-sidebar-width - @react-timelines-sidebar-closed-offset
   );
@@ -24,4 +26,11 @@
 
 .rtLayout.rtIsOpen .rtSidebarHeader.rtIsSticky {
   margin-left: 0;
+}
+
+.rtTimebarKey {
+  box-sizing: content-box !important;
+  height: @react-timelines-header-row-height;
+  border-bottom: @react-timelines-border-width solid
+    @react-timelines-keyline-color;
 }

@@ -16,9 +16,13 @@ const TrackKeys = ({ tracks, toggleOpen, clickTrackButton }) => (
   </ul>
 );
 
+TrackKeys.defaultProps = {
+  clickTrackButton: undefined,
+};
+
 TrackKeys.propTypes = {
-  tracks: PropTypes.arrayOf(PropTypes.shape({})),
-  toggleOpen: PropTypes.func,
+  tracks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  toggleOpen: PropTypes.func.isRequired,
   clickTrackButton: PropTypes.func,
 };
 
