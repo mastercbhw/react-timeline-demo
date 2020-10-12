@@ -25,13 +25,18 @@
     "@umijs/hooks": "^1.9.3",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.20",
+    "antd": "3.26.18",
     "classnames": "^2.2.6",
     "lint-staged": "^10.0.7",
+    "moment": "^2.28.0",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
+    "rc-chart-slider": "^0.0.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-jsgantt": "^2.4.3",
     "umi": "^3.2.20",
+    "uuid": "^3.4.0",
     "yorkie": "^2.0.0"
   }
 }

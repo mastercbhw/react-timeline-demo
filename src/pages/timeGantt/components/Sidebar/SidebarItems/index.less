@@ -1,0 +1,41 @@
+@import url('../../index.less');
+
+.sidebarItems {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.sidebarItem {
+  background-color: #fff;
+
+  .firstTitle {
+    display: flex;
+    height: @row-height;
+    line-height: @row-height;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+
+    .titleWarp {
+      // flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+
+      .title {
+      }
+    }
+
+    .iconWarp {
+      width: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .secondTitle {
+    height: @row-height;
+    line-height: @row-height;
+    overflow: hidden;
+    padding-left: 18px;
+    border-bottom: 1px solid #ccc;
+  }
+}

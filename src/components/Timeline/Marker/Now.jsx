@@ -6,7 +6,6 @@ import Marker from './index';
 
 function NowMarker(props) {
   const { now, time, visible } = props;
-  console.log('NowMarker -> time', time);
 
   return (
     <Marker
