@@ -1,0 +1,66 @@
+@left-width: 200px;
+
+.gantt {
+  display: flex;
+  background-color: #ff0;
+  width: 100%;
+  flex-direction: column;
+  min-height: 500px;
+
+  .top {
+    height: 50px;
+
+    .topLeft {
+      width: @left-width;
+    }
+  }
+
+  .bottom {
+    flex: 1;
+    display: flex;
+    position: relative;
+
+    .left {
+      width: @left-width;
+      position: relative;
+    }
+
+    .right {
+      // margin-left: @left-width;
+      width: calc(100% - @left-width);
+      position: relative;
+
+      .timelineBox {
+        height: 50px;
+      }
+
+      .mainSwiper {
+      }
+    }
+  }
+}
+
+:global {
+  .swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    width: 60% !important;
+  }
+
+  .swiper-slide:nth-child(2n) {
+    width: 40% !important;
+  }
+
+  .swiper-slide:nth-child(3n) {
+    width: 20% !important;
+  }
+}
