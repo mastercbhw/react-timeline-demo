@@ -27,17 +27,14 @@ function Timeline(props) {
   }, [props.scale]);
 
   // layout 发生变化
-  const handleLayoutChange = async (
-    { argumentTimelineViewportWidth, argumentSidebarWidth },
-    cb = () => {},
-  ) => {
+  const handleLayoutChange = (param, cb = () => {}) => {
     const timeTemp = createTime({
       ...props.scale,
-      viewportWidth: argumentTimelineViewportWidth,
+      viewportWidth: param.timelineViewportWidth,
     });
-    await setTime(timeTemp);
-    await setTimelineViewportWidth(argumentTimelineViewportWidth);
-    await setSidebarWidth(argumentSidebarWidth);
+    setTime(timeTemp);
+    setTimelineViewportWidth(param.timelineViewportWidth);
+    setSidebarWidth(param.sidebarWidth);
     cb();
   };
 

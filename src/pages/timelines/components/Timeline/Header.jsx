@@ -1,6 +1,6 @@
-import React, { PureComponent, useState, useEffect, useRef } from 'react';
-
+import React, { useEffect, useRef } from 'react';
 import cls from 'classnames';
+import { useUpdateEffect } from '@umijs/hooks';
 import Timebar from './Timebar';
 import styles from '../../less/index.less';
 
@@ -28,10 +28,19 @@ const Header = props => {
     if (props.sticky) {
       props.sticky.setHeaderHeight(timebar.current.offsetHeight);
       if (isSticky) {
-        scroll.current.scrollLeft = scrollLeft;
+        scroll.current.scrollLeft = props.sticky.scrollLeft;
       }
     }
-  }, [scrollLeft, isSticky]);
+  }, []);
+
+  useUpdateEffect(() => {
+    if (props.sticky) {
+      props.sticky.setHeaderHeight(timebar.current.offsetHeight);
+      scroll.current.scrollLeft = props.sticky.scrollLeft;
+    }
+  }, [props.sticky.scrollLeft, props.sticky.isSticky]);
+
+  console.log('noop -> viewportWidth', viewportWidth);
 
   return (
     <div
@@ -41,11 +50,11 @@ const Header = props => {
       onMouseLeave={onLeave}
     >
       <div
+        style={isSticky ? { width: viewportWidth, height: headerHeight } : {}}
         className={cls({
           [styles['rt-timeline__header']]: true,
           [styles['rt-is-sticky']]: isSticky,
         })}
-        style={isSticky ? { width: viewportWidth, height: headerHeight } : {}}
       >
         <div
           className={styles['rt-timeline__header-scroll']}

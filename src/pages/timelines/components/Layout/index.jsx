@@ -93,10 +93,8 @@ function Layout(props) {
     addListener('resize', handleResize);
     handleLayoutChange(() => scrollToNow());
     return () => {
-      if (enableSticky) {
-        removeListener('scroll', handleScrollY);
-        removeListener('resize', handleResize);
-      }
+      removeListener('scroll', handleScrollY);
+      removeListener('resize', handleResize);
     };
   }, []);
 
