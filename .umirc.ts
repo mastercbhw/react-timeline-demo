@@ -11,5 +11,6 @@ export default defineConfig({
     { path: '/antd', component: '@/pages/antdTable/index.jsx' },
     { path: '/swiper', component: '@/pages/swiper/index.jsx' },
     { path: '/holographic', component: '@/pages/holographic/index.jsx' },
+    { path: '/calendar', component: '@/pages/calendar/index.jsx' },
   ],
 });

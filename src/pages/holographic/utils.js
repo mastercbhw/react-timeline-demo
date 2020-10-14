@@ -79,6 +79,11 @@ export const addMonthsToYearAsDate = (year, monthsToAdd) => {
   return new Date(`${r.year}-${r.month}`);
 };
 
+export const addDaysToMonthsAsDate = (year, month, daysToAdd) => {
+  const r = addMonthsToYear(year, month);
+  return new Date(`${r.year}-${r.month}`);
+};
+
 // Credit: https://jsfiddle.net/katowulf/3gtDf/
 const ADJECTIVES = [
   'adamant',

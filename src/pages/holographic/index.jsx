@@ -8,6 +8,7 @@ import styles from './index.less';
 
 const now = new Date('2021-01-01');
 const timebar = buildTimebar();
+console.log('timebar', timebar);
 
 // eslint-disable-next-line no-alert
 const clickElement = element =>

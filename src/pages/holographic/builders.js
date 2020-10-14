@@ -32,7 +32,7 @@ export const buildQuarterCells = () => {
     const e = addMonthsToYear(START_YEAR, startMonth + MONTHS_PER_QUARTER);
     v.push({
       id: `${s.year}-q${quarter}`,
-      title: `Q${quarter} ${s.year}`,
+      title: `${s.year} 第${quarter}季度 `,
       start: new Date(`${s.year}-${s.month}-01`),
       end: new Date(`${e.year}-${e.month}-01`),
     });
@@ -90,6 +90,7 @@ export const buildElement = ({ trackId, start, end, i }) => {
   };
 };
 
+// 随机数据占用几个格子
 export const buildTrackStartGap = () =>
   Math.floor(Math.random() * MAX_TRACK_START_GAP);
 export const buildElementGap = () =>
