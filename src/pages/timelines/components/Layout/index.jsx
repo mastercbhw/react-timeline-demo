@@ -137,6 +137,7 @@ function Layout(props) {
           <Timeline
             now={now}
             time={time}
+            scale={props.scale}
             timebar={props.timebar}
             tracks={props.tracks}
             sticky={{

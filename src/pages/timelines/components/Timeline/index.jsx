@@ -46,6 +46,7 @@ const Timeline = props => {
         />
       )}
       <Header
+        scale={props.scale}
         time={time}
         timebar={timebar}
         onMove={handleMouseMove}
@@ -55,6 +56,7 @@ const Timeline = props => {
         sticky={sticky}
       />
       <Body
+        scale={props.scale}
         time={time}
         grid={grid}
         tracks={tracks}

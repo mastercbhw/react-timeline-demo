@@ -40,8 +40,6 @@ const Header = props => {
     }
   }, [props.sticky.scrollLeft, props.sticky.isSticky]);
 
-  console.log('noop -> viewportWidth', viewportWidth);
-
   return (
     <div
       style={isSticky ? { paddingTop: headerHeight } : {}}
@@ -62,7 +60,7 @@ const Header = props => {
           onScroll={isSticky ? handleScroll : noop}
         >
           <div ref={timebar} style={isSticky ? { width } : {}}>
-            <Timebar time={time} rows={rows} />
+            <Timebar time={time} rows={rows} scale={props.scale} />
           </div>
         </div>
       </div>

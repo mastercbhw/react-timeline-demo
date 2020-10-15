@@ -1,10 +1,13 @@
+// const MILLIS_IN_A_DAY = 1;
 const MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
 const create = ({ start, end, zoom, viewportWidth = 0, minWidth = 0 }) => {
   const duration = end - start;
 
   const days = duration / MILLIS_IN_A_DAY;
+  console.log('create -> days', days);
   const daysZoomWidth = days * zoom;
+  console.log('create -> daysZoomWidth', daysZoomWidth);
 
   let timelineWidth;
 
@@ -31,6 +34,7 @@ const create = ({ start, end, zoom, viewportWidth = 0, minWidth = 0 }) => {
 
   const toStyleLeftAndWidth = (from, to) => {
     const left = toX(from);
+
     return {
       left: `${left}px`,
       width: `${toX(to) - left}px`,

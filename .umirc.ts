@@ -5,12 +5,7 @@ export default defineConfig({
     type: 'none',
   },
   routes: [
-    { path: '/', component: '@/pages/index.jsx' },
-    { path: '/gantt', component: '@/pages/timeGantt/index.jsx' },
-    { path: '/jsgantt', component: '@/pages/jsGantt/index.jsx' },
-    { path: '/antd', component: '@/pages/antdTable/index.jsx' },
-    { path: '/swiper', component: '@/pages/swiper/index.jsx' },
+    { path: '/', redirect: '/holographic' },
     { path: '/holographic', component: '@/pages/holographic/index.jsx' },
-    { path: '/calendar', component: '@/pages/calendar/index.jsx' },
   ],
 });

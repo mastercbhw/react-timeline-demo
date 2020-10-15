@@ -43,6 +43,7 @@ function Timeline(props) {
     toggleOpen,
     zoomIn,
     zoomOut,
+    scale,
     scale: { zoom, zoomMin, zoomMax },
     tracks, // 轨道
     now,
@@ -66,6 +67,7 @@ function Timeline(props) {
         zoomMax={zoomMax}
       />
       <Layout
+        scale={scale}
         enableSticky={enableSticky}
         now={now}
         tracks={tracks}

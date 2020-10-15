@@ -3,11 +3,15 @@ import Timeline from '../timelines/inedx';
 
 import { START_YEAR, NUM_OF_YEARS, NUM_OF_TRACKS } from './constants';
 import { buildTimebar, buildTrack } from './builders';
+import { buildTimebarCL } from './buildersCL.js';
 import { fill } from './utils';
 import styles from './index.less';
 
-const now = new Date('2021-01-01');
-const timebar = buildTimebar();
+const now = new Date('2020-10-14');
+// const timebar1 = buildTimebar();
+// console.log("timebar111111", timebar1)
+
+const timebar = buildTimebarCL('2020-06-01', '2020-11-01');
 console.log('timebar', timebar);
 
 // eslint-disable-next-line no-alert
@@ -53,9 +57,8 @@ function Holographic() {
     setTracksById(tracksByIdTemp);
     setTracks(Object.values(tracksByIdTemp));
   };
-
-  const start = new Date(`${START_YEAR}`);
-  const end = new Date(`${START_YEAR + NUM_OF_YEARS}`);
+  const start = new Date('2019-9-01');
+  const end = new Date('2020-10-01');
 
   return (
     <div className={styles.app}>

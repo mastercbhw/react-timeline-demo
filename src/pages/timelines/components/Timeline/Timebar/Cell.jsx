@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import styles from '../../../less/index.less';
 
 const Cell = ({ time, title, start, end }) => (

@@ -6,7 +6,7 @@ import styles from '../../../less/index.less';
 const Track = ({ time, elements, isOpen, tracks, clickElement }) => (
   <div className={styles['tr-track']}>
     <div className={styles['rt-track__elements']}>
-      {elements
+      {/* {elements
         .filter(({ start, end }) => end > start)
         .map(element => (
           <Element
@@ -15,7 +15,7 @@ const Track = ({ time, elements, isOpen, tracks, clickElement }) => (
             clickElement={clickElement}
             {...element}
           />
-        ))}
+        ))} */}
     </div>
     {isOpen && tracks && tracks.length > 0 ? (
       <Tracks time={time} tracks={tracks} clickElement={clickElement} />
