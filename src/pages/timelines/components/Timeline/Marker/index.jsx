@@ -12,7 +12,7 @@ const Marker = ({ x, modifier, children, visible, highlighted }) => {
         [styles['rt-is-visible']]: visible,
         [styles['rt-is-highlighted']]: highlighted,
       })}
-      style={{ left: `${x}px` }}
+      style={{ left: x }}
     >
       <div className={styles['rt-marker__label']}>
         <div className={styles['rt-marker__content']}>{children}</div>

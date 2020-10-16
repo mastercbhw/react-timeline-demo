@@ -14,7 +14,7 @@ const Header = props => {
     onLeave,
     width,
     timebar: rows,
-    sticky: { isSticky, headerHeight, viewportWidth, scrollLeft } = {},
+    sticky: { isSticky, headerHeight, viewportWidth } = {},
   } = props;
 
   const scroll = useRef();

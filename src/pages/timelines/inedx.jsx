@@ -17,6 +17,13 @@ function Timeline(props) {
     createTime({ ...props.scale, viewportWidth: timelineViewportWidth }),
   );
 
+  useEffect(() => {
+    const timeTemp = createTime({
+      ...props.scale,
+      viewportWidth: timelineViewportWidth,
+    });
+    setTime(timeTemp);
+  }, []);
   // 缩放比 更新的时候，进行调用
   useEffect(() => {
     const timeTemp = createTime({
@@ -27,7 +34,7 @@ function Timeline(props) {
   }, [props.scale]);
 
   // layout 发生变化
-  const handleLayoutChange = (param, cb = () => {}) => {
+  const handleLayoutChange = (param, cb) => {
     const timeTemp = createTime({
       ...props.scale,
       viewportWidth: param.timelineViewportWidth,
@@ -35,7 +42,7 @@ function Timeline(props) {
     setTime(timeTemp);
     setTimelineViewportWidth(param.timelineViewportWidth);
     setSidebarWidth(param.sidebarWidth);
-    cb();
+    if (cb) cb();
   };
 
   const {

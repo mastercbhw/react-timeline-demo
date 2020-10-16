@@ -107,7 +107,7 @@ function Layout(props) {
     }
   }, [props.enableSticky, isSticky, scrollLeft]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     handleLayoutChange();
   }, [props.isOpen]);
 

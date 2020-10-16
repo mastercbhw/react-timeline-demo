@@ -39,14 +39,14 @@ const Timeline = props => {
       style={{ width: time.timelineWidthStyle }}
     >
       {now && <NowMarker now={now} visible time={time} />}
-      {pointerDate && (
+      {pointerDate ? (
         <PointerMarker
           date={pointerDate}
           time={time}
           visible={pointerVisible}
           highlighted={pointerHighlighted}
         />
-      )}
+      ) : null}
       <Header
         time={time}
         timebar={timebar}

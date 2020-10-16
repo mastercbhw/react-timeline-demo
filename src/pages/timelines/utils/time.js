@@ -2,11 +2,13 @@
 const MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
 const create = ({ start, end, zoom, viewportWidth = 0, minWidth = 0 }) => {
+  console.log('create -> viewportWidth', viewportWidth);
   const duration = end - start;
 
   console.log('create -> start', start);
-  const days = duration / MILLIS_IN_A_DAY;
-  const daysZoomWidth = days * zoom * 50;
+  const days = (duration / MILLIS_IN_A_DAY) * 20;
+  const daysZoomWidth = days * zoom;
+  console.log('create -> daysZoomWidth', daysZoomWidth);
 
   let timelineWidth;
 

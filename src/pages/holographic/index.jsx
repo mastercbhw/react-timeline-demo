@@ -10,8 +10,7 @@ import styles from './index.less';
 const start = new Date('2020-06-01 00:00:00');
 const end = new Date('2020-11-01  00:00:00');
 const now = new Date('2020-10-14  00:00:00');
-// const timebar1 = buildTimebar();
-// console.log("timebar111111", timebar1)
+// const timebar = buildTimebar();
 
 const timebar = buildTimebarCL('2020-06-01  00:00:00', '2020-11-01  00:00:00');
 console.log('timebar', timebar);
