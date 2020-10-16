@@ -7,5 +7,6 @@ export default defineConfig({
   routes: [
     { path: '/', redirect: '/holographic' },
     { path: '/holographic', component: '@/pages/holographic/index.jsx' },
+    { path: '/table', component: '@/pages/table/index.jsx' },
   ],
 });

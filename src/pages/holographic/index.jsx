@@ -33,6 +33,7 @@ function Holographic() {
   const [zoom, setZoom] = useState(2);
   const [tracksById, setTracksById] = useState(trackTemp);
   const [tracks, setTracks] = useState(Object.values(trackTemp));
+  console.log('Holographic -> tracks', JSON.stringify(tracks));
 
   const handleToggleOpen = () => {
     setOpen(!open);
