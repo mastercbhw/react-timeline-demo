@@ -7,11 +7,13 @@ import { buildTimebarCL } from './buildersCL.js';
 import { fill } from './utils';
 import styles from './index.less';
 
-const now = new Date('2020-10-14');
+const start = new Date('2020-06-01 00:00:00');
+const end = new Date('2020-11-01  00:00:00');
+const now = new Date('2020-10-14  00:00:00');
 // const timebar1 = buildTimebar();
 // console.log("timebar111111", timebar1)
 
-const timebar = buildTimebarCL('2020-06-01', '2020-11-01');
+const timebar = buildTimebarCL('2020-06-01  00:00:00', '2020-11-01  00:00:00');
 console.log('timebar', timebar);
 
 // eslint-disable-next-line no-alert
@@ -57,8 +59,6 @@ function Holographic() {
     setTracksById(tracksByIdTemp);
     setTracks(Object.values(tracksByIdTemp));
   };
-  const start = new Date('2019-9-01');
-  const end = new Date('2020-10-01');
 
   return (
     <div className={styles.app}>

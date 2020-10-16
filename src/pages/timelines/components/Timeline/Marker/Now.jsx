@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import Marker from './index';
-import { getDayMonth } from '../../../utils/formatDate';
 
 class NowMarker extends PureComponent {
   render() {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Header from './Header';
 import Body from './Body';
 import NowMarker from './Marker/Now';
@@ -11,10 +11,12 @@ const Timeline = props => {
   const [pointerDate, setPointerDate] = useState(null);
   const [pointerVisible, setPointerVisible] = useState(false);
   const [pointerHighlighted, setPointerHighlighted] = useState(false);
+  console.log('pointerHighlighted', pointerHighlighted);
+  console.log('pointerDate', pointerDate);
 
-  const handleMouseMove = e => {
+  const handleMouseMove = useCallback(e => {
     setPointerDate(props.time.fromX(getMouseX(e)));
-  };
+  }, []);
 
   const handleMouseLeave = () => {
     setPointerHighlighted(false);
@@ -46,7 +48,6 @@ const Timeline = props => {
         />
       )}
       <Header
-        scale={props.scale}
         time={time}
         timebar={timebar}
         onMove={handleMouseMove}

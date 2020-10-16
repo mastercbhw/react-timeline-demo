@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { getDayMonth } from '../../../utils/formatDate';
 import Marker from './index';
 
 const PointerMarker = ({ time, date, visible, highlighted }) => (
@@ -11,9 +10,7 @@ const PointerMarker = ({ time, date, visible, highlighted }) => (
     highlighted={highlighted}
   >
     <div>
-      <div>
-        <strong>{moment(date).format('YYYY-MM-DD HH:mm:ss')}</strong>
-      </div>
+      <strong>{moment(date).format('YYYY-MM-DD HH:mm:ss')}</strong>
     </div>
   </Marker>
 );
