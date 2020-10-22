@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Timeline from '../timelines/inedx';
+import Timeline from '../timelines/index';
 
 import { START_YEAR, NUM_OF_YEARS, NUM_OF_TRACKS } from './constants';
 import { buildTimebar, buildTrack } from './builders';

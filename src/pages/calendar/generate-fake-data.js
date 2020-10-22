@@ -1,8 +1,10 @@
 import faker from 'faker';
 import moment from 'moment';
+import randomColor from 'randomcolor';
 import styles from './CustomTimeline.less';
 
 export default function(groupCount = 30, itemCount = 1000, daysInPast = 30) {
+  const randomSeed = Math.floor(Math.random() * 1000);
   const groups = [];
   for (let i = 0; i < groupCount; i += 1) {
     groups.push({
@@ -31,7 +33,23 @@ export default function(groupCount = 30, itemCount = 1000, daysInPast = 30) {
       start: startValue,
       end: endValue,
       // className: (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend' : styles['item-pointer'],
-      className: styles['item-pointer'],
+      className:
+        moment(startDate).day() === 6 || moment(startDate).day() === 0
+          ? 'item-weekend'
+          : '',
+      bgColor: randomColor({
+        luminosity: 'light',
+        seed: randomSeed + i,
+        format: 'rgba',
+        alpha: 0.6,
+      }),
+      selectedBgColor: randomColor({
+        luminosity: 'light',
+        seed: randomSeed + i,
+        format: 'rgba',
+        alpha: 1,
+      }),
+      color: randomColor({ luminosity: 'dark', seed: randomSeed + i }),
       itemProps: {
         'data-tip': faker.hacker.phrase(),
       },

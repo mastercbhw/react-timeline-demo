@@ -1,16 +1,65 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Icon, Tooltip } from 'antd';
+import { Icon, Tooltip, Tabs, Button } from 'antd';
 import Timeline, {
+  HelpersContext,
   SidebarHeader,
   TimelineHeaders,
   DateHeader,
   TodayMarker,
   CursorMarker,
   CustomHeader,
+  CustomMarker,
+  RowItems,
+  GroupRow,
 } from 'react-calendar-timeline';
+import { Spring } from 'react-spring/renderprops';
 import styles from './CustomTimeline.less';
+import tabStyles from './tabs.less';
 import generateFakeData from './generate-fake-data';
+
+console.log('HelpersContext', HelpersContext);
+
+function UnavailableLayer({
+  getLayerRootProps,
+  groupUnavailableSlots,
+  getLeftOffsetFromDate,
+}) {
+  return (
+    <div {...getLayerRootProps()}>
+      {groupUnavailableSlots.map(slot => {
+        const left = getLeftOffsetFromDate(slot.start.valueOf());
+        const right = getLeftOffsetFromDate(slot.end.valueOf());
+        return (
+          <div
+            key={slot.id}
+            style={{
+              position: 'absolute',
+              left,
+              width: right - left,
+              backgroundColor: '#F2E3FF',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+const { TabPane } = Tabs;
+
+const tomorrow = moment().valueOf();
+
+const minTime = moment()
+  .add(-6, 'months')
+  .valueOf();
+const maxTime = moment()
+  .add(6, 'months')
+  .valueOf();
 
 const labelFormat = (param, timeType) => {
   const formatObj = {
@@ -62,6 +111,11 @@ export default class App extends Component {
       .add(1, 'day')
       .toDate();
 
+    const visibleTimeStart = moment().valueOf();
+    const visibleTimeEnd = moment()
+      .add(2, 'day')
+      .valueOf();
+
     // convert every 2 groups out of 3 to nodes, leaving the first as the root
     const newGroups = groups.map(group => {
       const isRoot = (parseInt(group.id, 10) - 1) % 3 === 0;
@@ -80,7 +134,32 @@ export default class App extends Component {
       items,
       defaultTimeStart,
       defaultTimeEnd,
+      visibleTimeStart,
+      visibleTimeEnd,
       openGroups: {},
+
+      customEvents: [
+        {
+          id: 1,
+          start: moment()
+            .startOf('week')
+            .add(12, 'h'),
+          end: moment()
+            .startOf('week')
+            .endOf('day'),
+          title: '门诊',
+        },
+        {
+          id: 2,
+          start: moment()
+            .startOf('week')
+            .add(3, 'd'),
+          end: moment()
+            .startOf('week')
+            .add(5, 'd'),
+          title: '住院',
+        },
+      ],
     };
   }
 
@@ -94,7 +173,11 @@ export default class App extends Component {
     });
   };
 
-  clickItem = (itemId, e, time) => {};
+  clickItem = (itemId, e, time) => {
+    console.log('clickItem -> time', time);
+    console.log('clickItem -> e', e);
+    console.log('clickItem -> itemId', itemId);
+  };
 
   groupRenderer = ({ group }) => {
     return (
@@ -110,16 +193,105 @@ export default class App extends Component {
     );
   };
 
+  itemRenderer = ({
+    item,
+    timelineContext,
+    itemContext,
+    getItemProps,
+    getResizeProps,
+  }) => {
+    const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
+    // const backgroundColor = itemContext.selected ? (itemContext.dragging ? "red" : item.selectedBgColor) : item.bgColor;
+    return (
+      <div
+        {...getItemProps({
+          style: {
+            background: '#ccc',
+            color: item.color,
+            border: `1px solid ${itemContext.resizing ? 'red' : item.color}`,
+            borderRadius: 4,
+            borderLeftWidth: itemContext.selected ? 3 : 1,
+            borderRightWidth: itemContext.selected ? 3 : 1,
+          },
+        })}
+      >
+        {itemContext.useResizeHandle ? <div {...leftResizeProps} /> : null}
+        <div
+          style={{
+            height: itemContext.dimensions.height,
+            overflow: 'hidden',
+            paddingLeft: 3,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {itemContext.title}
+        </div>
+
+        {itemContext.useResizeHandle ? <div {...rightResizeProps} /> : null}
+      </div>
+    );
+  };
+
+  logScroll = () => {
+    console.log('render -> this.scrollRef', this.scrollRef);
+  };
+
+  handleTimeChange = (visibleTimeStart, visibleTimeEnd, updateScrollCanvas) => {
+    console.log('handleTimeChange -> visibleTimeEnd', visibleTimeEnd);
+    console.log('handleTimeChange -> visibleTimeStart', visibleTimeStart);
+    // if (visibleTimeStart < minTime && visibleTimeEnd > maxTime) {
+    //   // this.setState({ visibleTimeStart: minTime, visibleTimeEnd: maxTime })
+
+    //   updateScrollCanvas(minTime, maxTime)
+    // } else if (visibleTimeStart < minTime) {
+    //   // this.setState({ visibleTimeStart: minTime, visibleTimeEnd: minTime + (visibleTimeEnd - visibleTimeStart) })
+
+    //   updateScrollCanvas(minTime, minTime + (visibleTimeEnd - visibleTimeStart))
+    // } else if (visibleTimeEnd > maxTime) {
+    //   // this.setState({ visibleTimeStart: maxTime - (visibleTimeEnd - visibleTimeStart), visibleTimeEnd: maxTime })
+
+    //   updateScrollCanvas(maxTime - (visibleTimeEnd - visibleTimeStart), maxTime)
+    // } else {
+    //   updateScrollCanvas(visibleTimeStart, visibleTimeEnd)
+    // }
+    // this.setState({ visibleTimeStart, visibleTimeEnd })
+    this.setState({
+      visibleTimeStart,
+      visibleTimeEnd,
+      scrolling: true,
+    });
+  };
+
+  moveResizeValidator = (action, item, time) => {
+    if (time < new Date().getTime()) {
+      const newTime =
+        Math.ceil(new Date().getTime() / (15 * 60 * 1000)) * (15 * 60 * 1000);
+      return newTime;
+    }
+
+    return time;
+  };
+
+  tabsClick = event => {
+    console.log('event', event);
+
+    this.setState({
+      visibleTimeStart: event.start.valueOf(),
+      visibleTimeEnd: event.end.valueOf(),
+    });
+  };
+
   render() {
     const {
       groups,
       items,
+      openGroups,
+      visibleTimeStart,
+      visibleTimeEnd,
       defaultTimeStart,
       defaultTimeEnd,
-      openGroups,
     } = this.state;
-    console.log('render -> defaultTimeStart', defaultTimeStart);
-    console.log('render -> defaultTimeEnd', defaultTimeEnd);
 
     // hide (filter) the groups that are closed, for the rest, patch their "title" and add some callbacks or padding
     const newGroups = groups
@@ -140,108 +312,176 @@ export default class App extends Component {
       });
 
     return (
-      <Timeline
-        groups={newGroups}
-        items={items}
-        keys={keys}
-        sidebarWidth={150}
-        canResize="right"
-        itemsSorted
-        canMove={false}
-        groupRenderer={this.groupRenderer}
-        // itemTouchSendsClick={false}
-        stackItems
-        onItemClick={this.clickItem}
-        itemHeightRatio={0.75}
-        showCursorLine
-        defaultTimeStart={defaultTimeStart}
-        defaultTimeEnd={defaultTimeEnd}
-        // visibleTimeStart={defaultTimeStart}
-        // visibleTimeEnd={defaultTimeEnd}
-      >
-        <TimelineHeaders>
-          <TodayMarker />
-          {/* <CursorMarker /> */}
-          <CursorMarker>
-            {({ styles: style, date }) => {
-              return (
-                <div style={style}>
-                  <div>{moment(date).format('YYYY/MM/DD HH:mm:ss')}</div>
-                </div>
-              );
-            }}
-          </CursorMarker>
-          <SidebarHeader>
-            {({ getRootProps }) => {
-              return (
-                <div
-                  {...getRootProps()}
-                  style={{ ...getRootProps().style, background: '#fff' }}
-                />
-              );
-            }}
-          </SidebarHeader>
-          <DateHeader unit="primaryHeader" labelFormat={labelFormat} />
-          <DateHeader labelFormat={secondLabel} />
-          {/* <DateHeader
-            unit="day"
-            labelFormat=""
-            style={{ height: 50 }}
-            data={{ someData: 'example' }}
-            interval
-            intervalRenderer={({ getIntervalProps, intervalContext, data }) => {
+      <div style={{ paddingTop: 100 }}>
+        <Button onClick={this.logScroll}>点击</Button>
+        <div className={tabStyles.cardContainer}>
+          <Tabs type="card">
+            <TabPane tab="Tab Title 1" key="1" style={{ width: 10 }} />
+            <TabPane tab="Tab Title 2" key="2" />
+            <TabPane tab="Tab Title 3" key="3" />
+            <TabPane tab="Tab Title 4" key="4" />
+            <TabPane tab="Tab Title 5" key="5" />
+            <TabPane tab="Tab Title 6" key="6" />
+            <TabPane tab="Tab Title 7" key="7" />
+            <TabPane tab="Tab Title 8" key="8" />
+            <TabPane tab="Tab Title 9" key="9" />
+            <TabPane tab="Tab Title 10" key="10" />
+            <TabPane tab="Tab Title 11" key="11" />
+            <TabPane tab="Tab Title 12" key="12" />
+            <TabPane tab="Tab Title 13" key="13" />
+            <TabPane tab="Tab Title 14" key="14" />
+            <TabPane tab="Tab Title 15" key="15" />
+            <TabPane tab="Tab Title 16" key="16" />
+            <TabPane tab="Tab Title 17" key="17" />
+            <TabPane tab="Tab Title 18" key="18" />
+            <TabPane tab="Tab Title 19" key="19" />
+            <TabPane tab="Tab Title 20" key="20" />
+            <TabPane tab="Tab Title 21" key="21" />
+            <TabPane tab="Tab Title 22" key="22" />
+          </Tabs>
+        </div>
+        <Spring
+          config={{ duration: 250 }}
+          to={{ visibleTimeStart, visibleTimeEnd }}
+          immediate={this.state.scrolling}
+        >
+          {props => (
+            <Timeline
+              groups={newGroups}
+              items={items}
+              fixedHeader="fixed"
+              canMove={false}
+              canResize={false}
+              traditionalZoom
+              itemsSorted
+              itemTouchSendsClick={false}
+              keys={keys}
+              onItemClick={this.clickItem}
+              sidebarWidth={150}
+              groupRenderer={this.groupRenderer}
+              stackItems
+              itemHeightRatio={0.75}
+              showCursorLine
+              // defaultTimeStart={defaultTimeStart}
+              // defaultTimeEnd={defaultTimeEnd}
+              itemRenderer={this.itemRenderer}
+              // scrollRef={ref => { this.scrollRef = ref }}
+              // verticalLineClassNamesForTime={(timeStart, timeEnd) => {
+              //   // remove next line then, everyThing is Ok
+              //   if (moment().add(-1, 'day').add(5, 'hour').valueOf() < timeStart && timeStart < moment().valueOf()) return ['verticalLine', 'verticalLine--past'];
+              //   return []
+              // }
+              // }
+              visibleTimeStart={props.visibleTimeStart}
+              visibleTimeEnd={props.visibleTimeEnd}
+              onTimeChange={this.handleTimeChange}
+              // moveResizeValidator={this.moveResizeValidator}
+              rowRenderer={({ getLayerRootProps }) => {
+                const { getLeftOffsetFromDate } = React.useContext(
+                  HelpersContext,
+                );
+                const groupUnavailableSlots = this.state.customEvents;
 
-              return <div {...getIntervalProps()} style={{ ...getIntervalProps().style, background: '#fff', }}>
-                {intervalContext.intervalText}
-              住院
-            </div>
-            }}
-          /> */}
-          {/* <CustomHeader height={50} headerData={{ someData: 'data' }}>
-            {({
-              headerContext,
-              getRootProps,
-              getIntervalProps,
-              showPeriod,
-              data,
-            }) => {
-              // console.log('data', data)
-              // console.log('headerContext', headerContext)
-              // console.log('getRootProps()', getRootProps())
-              const { intervals } = headerContext
-              return (
-                <div {...getRootProps()}>
-                  {intervals.map(interval => {
-                    const intervalStyle = {
-                      lineHeight: '30px',
-                      textAlign: 'center',
-                      borderLeft: '1px solid black',
-                      cursor: 'pointer',
-                      backgroundColor: 'Turquoise',
-                      color: 'white'
-                    }
+                return (
+                  <GroupRow>
+                    <RowItems />
+                    <UnavailableLayer
+                      getLayerRootProps={getLayerRootProps}
+                      getLeftOffsetFromDate={getLeftOffsetFromDate}
+                      groupUnavailableSlots={groupUnavailableSlots}
+                    />
+                  </GroupRow>
+                );
+              }}
+              onItemContextMenu={item => {
+                console.log(`Context Menu: ${item}`);
+              }}
+            >
+              <TimelineHeaders className={styles.sticky}>
+                <SidebarHeader>
+                  {({ getRootProps }) => {
                     return (
                       <div
-                        onClick={() => {
-                          showPeriod(interval.startTime, interval.endTime)
+                        {...getRootProps()}
+                        style={{
+                          ...getRootProps().style,
+                          borderRight: '1px solid #f3f3f3',
                         }}
-                        {...getIntervalProps({
-                          interval,
-                          style: intervalStyle
-                        })}
                       >
-                        <div className="sticky">
-                          {interval.startTime.format('YYYY')}
-                        </div>
+                        siderleft title
                       </div>
-                    )
-                  })}
-                </div>
-              )
-            }}
-          </CustomHeader> */}
-        </TimelineHeaders>
-      </Timeline>
+                    );
+                  }}
+                </SidebarHeader>
+                <CustomHeader
+                  headerData={{ customEvents: this.state.customEvents }}
+                  height={30}
+                >
+                  {({ getRootProps, data: { customEvents } }) => {
+                    return (
+                      <div {...getRootProps()}>
+                        {customEvents.map(event => {
+                          const { getLeftOffsetFromDate } = React.useContext(
+                            HelpersContext,
+                          );
+                          const left = getLeftOffsetFromDate(
+                            event.start.valueOf(),
+                          );
+                          const right = getLeftOffsetFromDate(
+                            event.end.valueOf(),
+                          );
+                          const width = right - left;
+                          return (
+                            <div
+                              key={event.id}
+                              style={{
+                                position: 'absolute',
+                                left,
+                                width,
+                                height: 30,
+                                lineHeight: '30px',
+                                backgroundColor: '#F2E3FF',
+                                overflow: 'hidden',
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                this.tabsClick(event);
+                              }}
+                            >
+                              {event.title}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  }}
+                </CustomHeader>
+                <CustomHeader
+                  headerData={{ customEvents: this.state.customEvents }}
+                  height={30}
+                  style={{ border: '1px solid #178aea' }}
+                >
+                  {({ getRootProps, data: { customEvents } }) => {
+                    return (
+                      <div
+                        style={{
+                          ...getRootProps().style,
+                          borderTop: '1px solid #178aea',
+                        }}
+                      >
+                        sadasda
+                      </div>
+                    );
+                  }}
+                </CustomHeader>
+                <DateHeader unit="primaryHeader" labelFormat={labelFormat} />
+                <DateHeader labelFormat={secondLabel} />
+              </TimelineHeaders>
+            </Timeline>
+          )}
+        </Spring>
+      </div>
     );
   }
 }
